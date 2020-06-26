@@ -1,1 +1,34 @@
-<p>recipe-detail works!</p>
+<div class="row">
+  <div class="col-sm-12">
+    <img [src]="recipe.image" [alt]="recipe.name" class="img-fluid">
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="h1">{{ recipe.name }}</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button">
+        Zarządzaj przepisem
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Dodaj do listy produktów</a>
+        <a class="dropdown-item" href="#">Edytuj przepis</a>
+        <a class="dropdown-item" href="#">Usuń przepis</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div>{{ recipe.description }}</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div>Składniki</div>
+  </div>
+</div>

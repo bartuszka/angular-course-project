@@ -1,1 +1,14 @@
-<p>recipe-item works!</p>
+<button
+  *ngIf="recipe"
+  type="button"
+  class="list-group-item list-group-item-action">
+  <div class="d-flex flex-row">
+    <div>
+      <div class="h4">{{ recipe.name }}</div>
+      <div>{{ recipe.description }}</div>
+    </div>
+    <div class="ml-3 d-flex align-items-center">
+      <img [src]="recipe.image" alt="{{ recipe.name }}">
+    </div>
+  </div>
+</button>
