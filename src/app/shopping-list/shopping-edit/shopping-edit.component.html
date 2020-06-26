@@ -1,1 +1,27 @@
-<p>shopping-edit works!</p>
+<div class="row">
+  <div class="col-sm-12">
+    <form>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label class="font-weight-bold" for="inputName">Nazwa</label>
+          <input
+            type="name"
+            class="form-control"
+            id="inputName"
+            #nameInput>
+        </div>
+        <div class="form-group col-auto">
+          <label class="font-weight-bold" for="inputAmount">Ilość</label>
+          <input
+            type="name"
+            class="form-control"
+            id="inputAmount"
+            #amountInput>
+        </div>
+      </div>
+      <button class="btn btn-success mr-1" type="button" (click)="addIngredient()">Dodaj</button>
+      <button class="btn btn-danger mr-1" type="button">Usuń</button>
+      <button class="btn btn-primary" type="button">Wyczyść</button>
+    </form>
+  </div>
+</div>
