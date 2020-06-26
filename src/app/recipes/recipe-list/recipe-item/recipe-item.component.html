@@ -1,7 +1,8 @@
 <button
   *ngIf="recipe"
   type="button"
-  class="list-group-item list-group-item-action">
+  class="list-group-item list-group-item-action"
+  (click)="select()">
   <div class="d-flex flex-row">
     <div>
       <div class="h4">{{ recipe.name }}</div>
