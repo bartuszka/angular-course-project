@@ -1,0 +1,76 @@
+<form [formGroup]="refipeForm">
+  <div class="form-group">
+    <label for="name">Nazwa</label>
+    <input formControlName="name" type="text" class="form-control" [ngClass]="{ 'is-invalid': refipeForm.get('name').invalid && refipeForm.get('name').touched }" id="name">
+    <div class="invalid-feedback">
+      Proszę podać poprawną nazwę.
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="image">Zdjęcie</label>
+    <div class="form-row">
+      <div class="col-10">
+        <input formControlName="image" type="text" class="form-control" id="image">
+      </div>
+      <div class="col-2">
+        <button class="btn btn-primary w-100" type="button" (click)="addImage()">{{ mode === modes.New ? 'Dodaj' : 'Edytuj' }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <img class="img-fluid" [src]="recipeImage" alt="recipe name" (error)="onImageError()" (load)="onImageLoad()">
+  </div>
+  <div class="form-group">
+    <label for="description">Opis</label>
+    <textarea
+      formControlName="description"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': refipeForm.get('description').invalid && refipeForm.get('description').touched }"
+      id="description" rows="3"></textarea>
+    <div class="invalid-feedback">
+      Proszę podać poprawny opis.
+    </div>
+  </div>
+  <div formArrayName="ingredients">
+    <label for="name">Składniki</label>
+    <div class="form-group form-row" *ngFor="let infredient of getIngredientControls(); let i = index" [formGroupName]="i">
+      <div class="col-8">
+        <input
+          class="form-control"
+          [ngClass]="{ 'is-invalid': infredient.get('name').invalid && infredient.get('name').touched }"
+          type="text"
+          formControlName="name">
+        <div class="invalid-feedback">
+          Proszę podać poprawną nazwę.
+        </div>
+      </div>
+      <div class="col-2">
+        <input
+          class="form-control"
+          [ngClass]="{ 'is-invalid': infredient.get('amount').invalid && infredient.get('amount').touched }"
+          type="number"
+          formControlName="amount">
+        <div class="invalid-feedback">
+          Zła ilość.
+        </div>
+      </div>
+      <div class="col-2">
+        <button class="btn btn-danger w-100" type="button" (click)="removeIngredient(i)">Usuń</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!getIngredientControls().length">Brak składników. Dodaj składniki do przepisu.</div>
+  <div class="form-group clearfix">
+    <button class="btn btn-primary float-right" type="button" (click)="addIngredient()">Dodaj</button>
+  </div>
+  <hr>
+  <div class="d-flex justify-content-between">
+    <button
+      class="btn btn-success mb-3"
+      type="submit" (click)="onSubmit()"
+      [disabled]="!refipeForm.valid">{{ mode === modes.New ? 'Dodaj przepis' : 'Edytuj przepis' }}</button>
+    <button
+      class="btn btn-secondary mb-3"
+      type="button" (click)="onGoBack()">{{ 'Anuluj' }}</button>
+  </div>
+</form>
