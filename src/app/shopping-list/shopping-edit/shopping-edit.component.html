@@ -1,27 +1,42 @@
 <div class="row">
   <div class="col-sm-12">
-    <form>
+    <form #shoppingListForm="ngForm" (ngSubmit)="addEditIngredient(shoppingListForm)">
       <div class="form-row">
         <div class="form-group col-md-6">
           <label class="font-weight-bold" for="inputName">Nazwa</label>
           <input
-            type="name"
+            type="text"
             class="form-control"
             id="inputName"
-            #nameInput>
+            ngModel
+            name="name"
+            required>
         </div>
         <div class="form-group col-auto">
           <label class="font-weight-bold" for="inputAmount">Ilość</label>
           <input
-            type="name"
+            type="number"
             class="form-control"
             id="inputAmount"
-            #amountInput>
+            ngModel
+            name="amount"
+            required
+            [pattern]="'^[1-9]+[0-9]*$'">
         </div>
       </div>
-      <button class="btn btn-success mr-1" type="button" (click)="addIngredient()">Dodaj</button>
-      <button class="btn btn-danger mr-1" type="button">Usuń</button>
-      <button class="btn btn-primary" type="button">Wyczyść</button>
+      <button
+        [disabled]="!shoppingListForm.valid || !hasFormChanged()"
+        class="btn btn-success mr-1"
+        type="submit">{{ ingredient ? 'Edytuj' : 'Dodaj' }}</button>
+      <button
+        [ngClass]="{ hidden: !ingredient || hasFormChanged() }"
+        class="btn btn-danger mr-1"
+        type="button" (click)="removeIngredient()">Usuń</button>
+      <button
+        [disabled]="isFormEmpty()"
+        (click)="clearForm()"
+        class="btn btn-primary"
+        type="button">Wyczyść</button>
     </form>
   </div>
 </div>

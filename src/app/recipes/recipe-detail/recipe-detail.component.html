@@ -1,44 +1,38 @@
-<div *ngIf="recipe; else infoText">
-  <div class="row mb-3">
-    <div class="col-sm-12">
-      <img [src]="recipe.image" [alt]="recipe.name" class="img-fluid">
-    </div>
+<div class="row mb-3">
+  <div class="col-sm-12">
+    <img [src]="recipe.image" [alt]="recipe.name" class="img-fluid">
   </div>
-  <div class="row mb-3">
-    <div class="col-sm-12">
-      <div class="h1">{{ recipe.name }}</div>
-    </div>
+</div>
+<div class="row mb-3">
+  <div class="col-sm-12">
+    <div class="h1">{{ recipe.name }}</div>
   </div>
-  <div class="row mb-3">
-    <div class="col-sm-12">
-      <div class="dropdown">
-        <button dropdown class="btn btn-primary dropdown-toggle" type="button">
-          Zarządzaj przepisem
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" (click)="addToShoppingList()">Dodaj do listy produktów</a>
-          <a class="dropdown-item" href="#">Edytuj przepis</a>
-          <a class="dropdown-item" href="#">Usuń przepis</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-sm-12">
-      <div>{{ recipe.description }}</div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div>Składniki:
-        <ul class="list-group">
-          <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">{{ ingredient.name }}: ({{ ingredient.amount }})</li>
-        </ul>
+</div>
+<div class="row mb-3">
+  <div class="col-sm-12">
+    <div class="dropdown">
+      <button dropdown class="btn btn-primary dropdown-toggle" type="button">
+        Zarządzaj przepisem
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" (click)="addToShoppingList()">Dodaj do listy produktów</a>
+        <a class="dropdown-item" routerLink="edit">Edytuj przepis</a>
+        <a class="dropdown-item" (click)="removeRecipe()">Usuń przepis</a>
       </div>
     </div>
   </div>
 </div>
-
-<ng-template #infoText>
-  Please select a recipe
-</ng-template>
+<div class="row mb-3">
+  <div class="col-sm-12">
+    <div>{{ recipe.description }}</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div>Składniki:
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">{{ ingredient.name }}: ({{ ingredient.amount }})</li>
+      </ul>
+    </div>
+  </div>
+</div>
