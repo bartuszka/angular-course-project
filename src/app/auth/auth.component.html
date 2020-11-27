@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-lg-6 offset-lg-3 col-sm-12">
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isAuthLoading; else spinner">
+      <div class="form-group">
+        <label for="email">E-Mail</label>
+        <input
+          type="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': !email.valid && email.touched }"
+          id="email"
+          ngModel
+          name="email"
+          required
+          email
+          #email="ngModel">
+        <div class="invalid-feedback">Proszę podać poprawny adres email</div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Hasło</label>
+        <input
+          type="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': !password.valid && password.touched }"
+          id="password"
+          ngModel
+          name="password"
+          minlength="4"
+          maxlength="12"
+          required
+          pattern="[1-9A-Za-z#*]*"
+          #password="ngModel"
+          >
+        <div class="invalid-feedback">Proszę podać poprawne hasło</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mr-1" *ngIf="!(user$ | async)" [disabled]="!authForm.valid">{{ isLoginMode ? "Zaloguj się" : "Zarejestruj się" }}</button>
+      <button type="button" class="btn btn-primary mr-1" *ngIf="!(user$ | async)" (click)="onSwitchMode()">Przełącz na {{ isLoginMode ? "Rejestrowanie" : "Logowanie" }}</button>
+    </form>
+    <ng-template #spinner>
+      <div class="d-flex justify-content-center mt-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
