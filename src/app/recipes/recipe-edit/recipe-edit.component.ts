@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { Recipe } from "../models/recipe.mode.";
 import { RecipeService } from "../recipe.service";
 import { Ingredient } from "../../shared/indredient.model";
+import { RouterService } from "../../shared/router-service";
 
 enum Modes {
   Edit = 'Edit',
@@ -25,7 +26,7 @@ export class RecipeEditComponent implements OnInit {
   private formIngredients: FormArray;
   private defaultImage: string = 'https://cdn.newseasonsmarket.com/wp-content/uploads/2015/11/Homepage-Recipe-Text.png';
 
-  constructor(private router: Router, private route: ActivatedRoute, private recipeService: RecipeService) { }
+  constructor(private routerService: RouterService, private route: ActivatedRoute, private recipeService: RecipeService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((recipe: Recipe) => {
@@ -58,9 +59,8 @@ export class RecipeEditComponent implements OnInit {
 
   public onSubmit() {
     const newRecipe: Recipe = { ...this.refipeForm.value, id: this.getId(), image: this.recipeImage }
-    console.log(newRecipe);
     this.mode === Modes.New ? this.recipeService.addRecipe(newRecipe) : this.recipeService.editRecipe(this.recipe.id, newRecipe);
-    this.router.navigate(this.mode === Modes.New ? ['../', newRecipe.id] : ['../../', newRecipe.id], { relativeTo: this.route });
+    this.routerService.navigate(this.mode === Modes.New ? `../${newRecipe.id}` : `../../${newRecipe.id}`, this.route);
   }
 
   public addImage(): void {
@@ -77,13 +77,13 @@ p
   }
 
   public onGoBack(): void {
-    let redirectUrlPath: string[];
+    let redirectUrlPath: string;
     if (this.mode === Modes.New) {
-      redirectUrlPath = this.recipeService.getRecipes().length ? ['/recipes', this.recipeService.getRecipes()[0].id] : ['/recipes'];
+      redirectUrlPath = this.recipeService.getRecipes().length ? `/recipes${this.recipeService.getRecipes()[0].id}` : '/recipes';
     } else {
-      redirectUrlPath = ['../'];
+      redirectUrlPath = '../';
     }
-    this.router.navigate(redirectUrlPath, { relativeTo: this.route });
+    this.routerService.navigate(redirectUrlPath, this.route);
   }
 
   private setDefaultImage(): void {

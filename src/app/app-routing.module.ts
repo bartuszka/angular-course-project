@@ -1,25 +1,16 @@
 import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { RecipesComponent } from "./recipes/recipes.component";
-import { ShoppingListComponent } from "./shopping-list/shopping-list.component";
-import { NoRecipeSelectedComponent } from "./recipes/no-recipe-selected/no-recipe-selected.component";
-import { RecipeDetailComponent } from "./recipes/recipe-detail/recipe-detail.component";
-import { RecipeEditComponent } from "./recipes/recipe-edit/recipe-edit.component";
+import { PreloadAllModules, PreloadingStrategy, RouterModule, Routes } from "@angular/router";
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
-  { path: 'recipes', component: RecipesComponent, children: [
-      { path: '', component: NoRecipeSelectedComponent, pathMatch: 'full' },
-      { path: 'new', component: RecipeEditComponent },
-      { path: ':id', component: RecipeDetailComponent },
-      { path: ':id/edit', component: RecipeEditComponent }
-    ] },
-  { path: 'shopping-list', component: ShoppingListComponent }
+  { path: 'recipes', loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule) },
+  { path: 'shopping-list', loadChildren: () => import('./shopping-list/shopping-list.module').then(m => m.ShoppingListModule) },
+  { path: 'authentication', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [
     RouterModule

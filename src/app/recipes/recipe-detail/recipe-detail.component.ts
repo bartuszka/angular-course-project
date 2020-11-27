@@ -1,8 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Recipe} from "../models/recipe.mode.";
+import {Component, OnInit} from '@angular/core';
+import { Recipe } from "../models/recipe.mode.";
 import { RecipeService } from "../recipe.service";
-import { ShoppingListService } from "../../shopping-list/shopping-list.service";
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
+import { RouterService } from "../../shared/router-service";
+import { Store } from "@ngrx/store";
+import * as ShoppingListActions from "../../shopping-list/store/shopping-list.actions"
+import * as fromApp from "../../store/app.reducer";
 
 @Component({
   selector: 'app-recipe-detail',
@@ -10,25 +13,27 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
   styleUrls: ['./recipe-detail.component.scss']
 })
 export class RecipeDetailComponent implements OnInit {
-  @Input() recipe: Recipe;
+  public recipe: Recipe;
 
   constructor(
-    private router: Router,
+    private routerService: RouterService,
     private route: ActivatedRoute,
     private recipeService: RecipeService,
-    private shoppingListService: ShoppingListService) { }
+    private store: Store<fromApp.AppState>) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => this.recipe = this.recipeService.getRecipeById(params['id']));
+    this.route.params.subscribe((params: Params) => {
+      this.recipe = this.recipeService.getRecipeById(params['id'])
+    });
   }
 
   public addToShoppingList(): void {
-    this.shoppingListService.addIngredients(this.recipe.ingredients);
+    this.store.dispatch(new ShoppingListActions.AddIngredients(this.recipe.ingredients))
   }
 
   public removeRecipe(): void {
     this.recipeService.removeRecipe(this.recipe);
     const firstRecipeID: string = this.recipeService.getRecipes()[0] ? this.recipeService.getRecipes()[0].id : null;
-    this.router.navigate(firstRecipeID ? ['../', firstRecipeID] : ['../'], { relativeTo: this.route });
+    this.routerService.navigate(firstRecipeID ? `../${firstRecipeID}` : '../', this.route);
   }
 }

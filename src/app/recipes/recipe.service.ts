@@ -3,9 +3,9 @@ import { Ingredient } from "../shared/indredient.model";
 import { Subject } from "rxjs";
 
 export class RecipeService {
-  public recipesChanged: Subject<Recipe[]> = new Subject();
+  public recipesChanged$: Subject<Recipe[]> = new Subject();
   private recipes: Recipe[] = [
-    new Recipe(
+    /*new Recipe(
       '132644',
       'Shakshuka',
       'Easy, healthy breakfast (or any time of day) recipe in Israel and other parts of the Middle East and North Africa.',
@@ -22,8 +22,13 @@ export class RecipeService {
       'Garlic Butter Sauteed Zucchini',
       'Sautéed zucchini is a quick, easy, and healthy side dish. It’s delicious, too.',
       'https://www.inspiredtaste.net/wp-content/uploads/2018/12/Sauteed-Zucchini-Recipe-1-1200.jpg',
-      [new Ingredient('Mięso mielone', 1), new Ingredient('Ziemniaki', 3), new Ingredient('Kapusta', 2)])
+      [new Ingredient('Mięso mielone', 1), new Ingredient('Ziemniaki', 3), new Ingredient('Kapusta', 2)])*/
   ];
+
+  public initializeRecipes(recipes: Recipe[]): void {
+    this.recipes = recipes;
+    this.recipesChanged$.next(this.recipes.slice());
+  }
 
   public getRecipes(): Recipe[] {
     return this.recipes.slice();
@@ -36,19 +41,19 @@ export class RecipeService {
   public removeRecipe(recipe: Recipe): void {
     const removedRecipeIndex: number = this.recipes.findIndex((currentRecipe: Recipe) => currentRecipe.id === recipe.id);
     this.recipes.splice(removedRecipeIndex, 1);
-    this.recipesChanged.next(this.recipes.slice());
+    this.recipesChanged$.next(this.recipes.slice());
   }
 
   public addRecipe(recipe: Recipe): void {
     this.recipes.push(recipe);
-    this.recipesChanged.next(this.recipes.slice());
+    this.recipesChanged$.next(this.recipes.slice());
   }
 
   public editRecipe(recipeId: string, recipe: Recipe): void {
     const existingRecipeIndex: number = this.recipes.findIndex((recipe: Recipe) => recipe.id === recipeId);
     if (existingRecipeIndex !== -1) {
       this.recipes[existingRecipeIndex] = recipe;
-      this.recipesChanged.next(this.recipes.slice());
+      this.recipesChanged$.next(this.recipes.slice());
     }
   }
 
